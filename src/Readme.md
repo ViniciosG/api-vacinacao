@@ -1,8 +1,7 @@
 Model - Tráfega os dados em todas as camadas do sistema até chegar no banco de dados e do banco de dados
 para camadas do sistema.
 
-Service - devera conter a lógica de negócio especifica e podera ser injetada como denpedencia de qualquer
-outro componente usando a Anotação @AUTOWIRED
+Service - devera conter a lógica de negócio especifica e pode ser injetada como denpedencia de qualquer outro componente usando a Anotação @AUTOWIRED
 
 Controller - Onde aceitará um path como parâmetro, tornando esse componente disponível para acesso
 HTTP para o "path" adicioanado, também é possivel gerencar os verbos HTTP para acessos a API
@@ -38,6 +37,28 @@ banco de dado, nesse projeto foi utilizado o Banco de Dados
 Assim há também a possibilidade de trocar de banco de dados sem ter de alterar código Java, já que isso fica como responsabilidade da ferramenta.
 Anotação é um recurso do Java que permite inserir metadados 
 @Entity indica que objetos dessa classe se tornem "persistível" no banco de dados
+
+
+ErrorValidationHandler - Da mesma forma, escrevi uma classe especial que será retornada em todos os casos de falha. Tendo uma estrutura de mensagem de erro consistente para todas as APIs, ajude os consumidores da API a escrever um código mais robusto.
+
+ANTES - DBException, colocamos algumas informações na forma de mensagem e a lançamos
+Erro de execução SQL
+Não existem dados onde esperamos pelo menos uma linha
+Existem várias linhas onde esperamos apenas uma única linha
+Erro de parâmetros inválidos
+e muitos mais casos
+
+DEPOIS
+
+ResponseEntityExceptionHandler é uma classe base conveniente para fornecer tratamento de exceção centralizado em todos os @RequestMappingmétodos por meio de @ExceptionHandlermétodos. @ControllerAdviceé mais para habilitar a verificação automática e configuração na inicialização do aplicativo.
+enviar resposta de erro consistente e estruturada nas respostas da API. EVITAR MENSAGENS DESAGRADÁVEIS DO BANCO.
+Isso permite um mecanismo que rompe com o modelo MVC mais antigo e faz uso de ResponseEntity junto com a segurança de tipo e flexibilidade de @ExceptionHandler :
+
+Para validar regras de validação inserimos no DTO, onde o hibernate + jpa faz essa validação
+JPA - Persistir objetos no banco é um ORM, todas aplicações de grande porte utilizam ele.
+Entidade representa uma tabela no banco, caso possuir nome diferente use @Table
+@ManyToOne - Uma vacina só pode estar ligada á um paciente apenas, Desta forma, o próprio JPA no Spring criará este relacionamento entre as entidades no banco de dados!
+
 
 
 
